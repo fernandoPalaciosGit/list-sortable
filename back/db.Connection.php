@@ -6,19 +6,32 @@ class Connection {
     private $db = CONN_DB;
     private $myconn;
 
-    function connect() {
+    public function connect() {
         $this->myconn = mysqli_connect($this->host, $this->user, $this->pass, $this->db);
         if (!$this->myconn) {
             die('Could not connect to database!');
         }
     }
 
-    function close() {
+    public function close() {
         mysqli_close($this->myconn);
     }
     
     public function getConnecion() {
         return $this->myconn;
+    }
+    
+    static function checkPostStatus () {
+        return  isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+                $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
+    }
+    
+    static function sanitizePost ($data) {
+        return mysqli_real_escape_string($this->myconn, $data);
+    }
+    
+    static function getPost ($key) {
+        return isset($_POST[$key]) && !empty($_POST[$key]) ? $_POST[$key] : false;
     }
 }
  ?>

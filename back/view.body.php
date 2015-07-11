@@ -18,7 +18,7 @@
         </div>
         
         <div class="col m12 l6">
-            <form class="form-todo-list">
+            <form class="form-todo-list" action="back/ctrl.actionList.php">
                 <div class="row">
                     <div class="col s12">
                         <p>
