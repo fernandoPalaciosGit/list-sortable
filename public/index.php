@@ -9,5 +9,7 @@ $connection->connect();
 $todoList = new TodoList();
 $todoList->setListFromDb($connection->getConnecion());
 
+require_once(ROOT_PATH . '/back/view.head.php');
+require_once(ROOT_PATH . '/back/view.body.php');
+require_once(ROOT_PATH . '/back/view.footer.php');
   ?>
-  <pre><?= print_r($todoList->getList()); ?></pre>
