@@ -1,0 +1,25 @@
+{
+  "name": "list-sortable",
+  "version": "0.0.0",
+  "authors": [
+    "Fernando Palacios Landi <fernandopalacioslandi@gmail.com>"
+  ],
+  "description": "sortable TODO list",
+  "keywords": [
+    "list",
+    "TODO"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "materialize": "~0.97.0",
+    "jquery": "~2.1.4",
+    "jquery.ui": "~1.11.4"
+  }
+}
