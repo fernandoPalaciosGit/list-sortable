@@ -11,8 +11,13 @@ class TodoList {
     );
     
     // SETTERS GETTERS
-    private function setItemList ($id, $name) {
-        $this->itemList[$id] = $name;
+    private function setItemList ($id, $name, $order) {
+        $newItemList = array(
+            'id' => $id,
+            'name' => $name,
+            'order' => $order,
+        );
+        array_push($this->itemList, $newItemList);
     }
     
     public function getItemList () {
@@ -59,7 +64,7 @@ class TodoList {
         $result = mysqli_query($conn, $query);
         
         while ($data = mysqli_fetch_assoc($result)) {
-            $this->setItemList($data['id'], $data['name']);
+            $this->setItemList($data['id'], $data['name'], $data['order']);
         }
     }
     
