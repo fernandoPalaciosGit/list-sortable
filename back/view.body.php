@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col m12 l6">
             <div class="collection collection-todo-list">
-                <?php  foreach ($todoList->getList() as $id => $name) { ?>
+                <?php  foreach ($todoList->getItemList() as $id => $name) { ?>
                     <a  href="#!" contenteditable="true"
                         data-id-list="<?= $id ?>"
                         class="collection-item"><?= $name ?></a>

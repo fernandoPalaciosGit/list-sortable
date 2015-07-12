@@ -7,7 +7,7 @@ $connection = new Connection();
 $connection->connect();
 
 $todoList = new TodoList();
-$todoList->setListFromDb($connection->getConnecion());
+$todoList->getItemListFromDb($connection->getConnecion());
 
 require_once(ROOT_PATH . '/back/view.head.php');
 require_once(ROOT_PATH . '/back/view.body.php');
