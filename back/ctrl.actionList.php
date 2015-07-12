@@ -22,11 +22,8 @@ if (Connection::checkPostStatus() &&  $action != false ) {
                             Connection::sanitizePost($order));
     $todoList->actionTodoList($connection->getConnecion());
     
-    if (!empty($todoList->getList())) {
-        echo json_encode($todoList->getList());
-    }
-    
     $connection->close();
+    echo json_encode($todoList->getNewItem());
 
 } else {
     die('Cannot access correctly to action list.');

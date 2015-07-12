@@ -25,6 +25,10 @@ class TodoList {
         $this->itemPost['order'] = $order;
     }
     
+    public function getNewItem () {
+        return $this->itemPost;
+    }
+    
     // LOGIC CONTROLLER
     public function actionTodoList ($conn) {
         
