@@ -3,6 +3,11 @@
     
     window.widgetListFactory = function () {
         var _actualStatus = {},
+        _ajaxStatus = {
+            type: 'POST',
+            url: '../back/ctrl.actionList.php',
+            dataType: 'json'   
+        },
 
         // trigger TodoList state : Edit/order
         _updateStatusList = function (uiList) {
@@ -29,14 +34,14 @@
         },
         
         // On submit new Todo Item
-        onInsertItem = function (uiList, todoName) {
+        onInsertItem = function (uiList, name) {
             $.ajax({
-                type: 'POST',
-                url: '../back/ctrl.actionList.php',
-                dataType: 'json',
+                type: _ajaxStatus.type,
+                url: _ajaxStatus.url,
+                dataType: _ajaxStatus.dataType,
                 data: {
                     action: 'insert',
-                    name: todoName,
+                    name: name,
                     order: uiList.$itemList.size() + 1
                 },
                 success: function (data){
@@ -49,6 +54,7 @@
                             text: data.name
                         }).appendTo(uiList.$list);
                         _updateStatusList(uiList);
+                        Materialize.toast('Cambios guardados, nueva Tarea.', 3000, 'rounded')
                     }
                 },
                 complete: function (xhr) {
@@ -63,24 +69,47 @@
             
             if (uiList.isOrdered) {
                 $.ajax({
-                    type: 'POST',
-                    url: '../back/ctrl.actionList.php',
-                    dataType: 'json',
+                    type: _ajaxStatus.type,
+                    url: _ajaxStatus.url,
+                    dataType: _ajaxStatus.dataType,
                     data: {
                         action: 'order',
                         sortableListId: sortableListId 
+                    },
+                    success: function () {
+                        Materialize.toast('Cambios guardados, Tareas ordenadas.', 3000, 'rounded')
                     },
                     complete: function (xhr) {
                         console.info(xhr.responseJSON || xhr.responseText);
                     }
                 });
             }
+        },
+        
+        onEditSortable = function (uiList, id, name) {
+            $.ajax({
+                type: _ajaxStatus.type,
+                url: _ajaxStatus.url,
+                dataType: _ajaxStatus.dataType,
+                data: {
+                    action: 'edit',
+                    id: id,
+                    name: name
+                },
+                success: function () {
+                    Materialize.toast('Cambios guardados, Tarea editada.', 3000, 'rounded')
+                },
+                complete: function (xhr) {
+                    console.info(xhr.responseJSON || xhr.responseText);
+                }
+            });
         };
         
         return {
             toggleStatus: toggleStatus,
             onInsertItem: onInsertItem,
-            onUpdateSortable: onUpdateSortable
+            onUpdateSortable: onUpdateSortable,
+            onEditSortable: onEditSortable
         };
     };
 }(jQuery));

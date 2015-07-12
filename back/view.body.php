@@ -2,7 +2,7 @@
     
     <div class="row">
         <div class="col s12">
-            <h4 class="indigo-text">LISTA DE TAREAS</h4>
+            <h4 class="indigo-text text-lighten-1">LISTA DE TAREAS</h4>
         </div>
     </div>
     
