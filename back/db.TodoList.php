@@ -4,6 +4,7 @@ class TodoList {
     private $itemPost = array(
         "action" => null,
         "isActionDone" => false,
+        "sortableListId"  => null,
         "id" => null,       // INT (10) AI
         "name" => null,     // VARCHAR (300) NULL
         "order" => null     // INT (10) NULL
@@ -18,11 +19,12 @@ class TodoList {
         return $this->itemList;
     }
     
-    public function setNewItem ($action, $id, $name, $order) {
+    public function setNewItem ($action, $id, $name, $order, $sortableListId) {
         $this->itemPost['action'] = $action;
         $this->itemPost['id'] = $id;
         $this->itemPost['name'] = $name;
         $this->itemPost['order'] = $order;
+        $this->itemPost['sortableListId'] = $sortableListId;
     }
     
     public function getNewItem () {
@@ -94,8 +96,23 @@ class TodoList {
     }
     
     private function orderItemFromDb ($conn) {
-    
+        // manage toArray interface from sortable items id´s
+        $sortableListId = explode(',', $this->itemPost['sortableListId']);
+        $query = 'UPDATE elements SET order = CASE id ' . PHP_EOL;
+        
+        // update all itemList with new sorted value
+        foreach ($sortableListId as $index => $id){
+            $idList = explode('-', $id);
+            $idList = mysqli_real_escape_string($conn, $idList[1]);
+            $order = mysqli_real_escape_string($conn, $index + 1);
+            $query .= 'WHEN ' . $idList .'  THEN ' . $order . '' . PHP_EOL;
+        }
+        
+        $query .= 'ELSE order ' . PHP_EOL . 'END;';
+        
+        if (mysqli_query($conn, $query)) {
+            $this->itemPost['isActionDone'] = true;
+        }
     }
 }
- 
  ?>
