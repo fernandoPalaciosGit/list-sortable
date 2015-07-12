@@ -26,23 +26,23 @@ class TodoList {
     }
     
     // LOGIC CONTROLLER
-    public function actionTodoList () {
+    public function actionTodoList ($conn) {
         
         switch ($this->itemPost['action']) {
             case 'insert':
-                $this->insertItemFromDb();
+                $this->insertItemFromDb($conn);
                 break;
                 
             case 'remove':
-                $this->removeItemFromDb();
+                $this->removeItemFromDb($conn);
                 break;
             
             case 'edit':
-                $this->editItemFromDb();
+                $this->editItemFromDb($conn);
                 break;
                 
             case 'order':
-                $this->orderItemFromDb();
+                $this->orderItemFromDb($conn);
                 break;
         }
     }
@@ -68,7 +68,7 @@ class TodoList {
     }
     
     private function removeItemFromDb ($conn) {
-        $parseQuery = "DELETE FROM elementos WHERE id = %d;";
+        $parseQuery = "DELETE FROM elements WHERE id = %d;";
         $query = sprintf($parseQuery, $this->itemPost['id']);
         
         if (mysqli_query($conn, $query)) {
@@ -81,7 +81,12 @@ class TodoList {
     }
     
     private function editItemFromDb ($conn) {
-    
+        $parseQuery = "UPDATE elements SET name = '%s' WHERE id = %d;";
+        $query = sprintf($parseQuery, $this->itemPost['name'], $this->itemPost['id']);
+     
+        if (mysqli_query($conn, $query)) {
+            $this->itemPost['isActionDone'] = true;
+        }
     }
     
     private function orderItemFromDb ($conn) {

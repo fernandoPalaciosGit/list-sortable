@@ -20,7 +20,7 @@ if (Connection::checkPostStatus() &&  $action != false ) {
                             Connection::sanitizePost($id),
                             Connection::sanitizePost($name),
                             Connection::sanitizePost($order));
-    $todoList->actionTodoList();
+    $todoList->actionTodoList($connection->getConnecion());
     
     if (!empty($todoList->getList())) {
         echo json_encode($todoList->getList());
