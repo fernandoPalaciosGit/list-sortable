@@ -24,12 +24,12 @@ class TodoList {
         return $this->itemList;
     }
     
-    public function setNewItem ($action, $id, $name, $order, $sortableListId) {
-        $this->itemPost['action'] = $action;
-        $this->itemPost['id'] = $id;
-        $this->itemPost['name'] = $name;
-        $this->itemPost['order'] = $order;
-        $this->itemPost['sortableListId'] = $sortableListId;
+    public function setNewItem ($conn, $action, $id, $name, $order, $sortableListId) {
+        $this->itemPost['action'] = mysqli_real_escape_string($conn, $action);
+        $this->itemPost['id'] = mysqli_real_escape_string($conn, $id);
+        $this->itemPost['name'] = mysqli_real_escape_string($conn, $name);
+        $this->itemPost['order'] = mysqli_real_escape_string($conn, $order);
+        $this->itemPost['sortableListId'] = mysqli_real_escape_string($conn, $sortableListId);
     }
     
     public function getNewItem () {
@@ -60,7 +60,7 @@ class TodoList {
     
     // MYSQL DDL DML
     public function getItemListFromDb ($conn) {
-        $query = "SELECT * FROM elements ORDER BY 'order';";
+        $query = "SELECT * FROM elements ORDER BY `order`;";
         $result = mysqli_query($conn, $query);
         
         while ($data = mysqli_fetch_assoc($result)) {
@@ -101,20 +101,19 @@ class TodoList {
     }
     
     private function orderItemFromDb ($conn) {
-        // manage toArray interface from sortable items id´s
+        // manage new ordered items id´s (by toArray interface)
         $sortableListId = explode(',', $this->itemPost['sortableListId']);
-        $query = 'UPDATE elements SET order = CASE id ' . PHP_EOL;
+        $query = 'UPDATE elements SET `order` = CASE id ' . PHP_EOL;
         
         // update all itemList with new sorted value
-        foreach ($sortableListId as $index => $id){
-            $idList = explode('-', $id);
-            $idList = mysqli_real_escape_string($conn, $idList[1]);
+        foreach ($sortableListId as $index => $idList){
+            $idList = mysqli_real_escape_string($conn, $idList);
             $order = mysqli_real_escape_string($conn, $index + 1);
             $query .= 'WHEN ' . $idList .'  THEN ' . $order . '' . PHP_EOL;
         }
         
-        $query .= 'ELSE order ' . PHP_EOL . 'END;';
-        
+        $query .= 'ELSE `order` ' . PHP_EOL . 'END;';
+
         if (mysqli_query($conn, $query)) {
             $this->itemPost['isActionDone'] = true;
         }

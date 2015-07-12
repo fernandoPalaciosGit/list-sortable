@@ -26,10 +26,6 @@ class Connection {
                 $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
     }
     
-    static function sanitizePost ($data) {
-        return mysqli_real_escape_string($this->myconn, $data);
-    }
-    
     static function getPost ($key) {
         return isset($_POST[$key]) && !empty($_POST[$key]) ? $_POST[$key] : false;
     }

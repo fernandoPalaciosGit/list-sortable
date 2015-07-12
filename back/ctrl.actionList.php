@@ -15,14 +15,11 @@ if (Connection::checkPostStatus() &&  $action != false ) {
 
     $connection = new Connection();
     $connection->connect();
+    $conn = $connection->getConnecion();
     
     $todoList = new TodoList();
-    $todoList->setNewItem(  Connection::sanitizePost($action),
-                            Connection::sanitizePost($id),
-                            Connection::sanitizePost($name),
-                            Connection::sanitizePost($order),
-                            Connection::sanitizePost($sortableListId));
-    $todoList->actionTodoList($connection->getConnecion());
+    $todoList->setNewItem($conn, $action, $id, $name, $order, $sortableListId);
+    $todoList->actionTodoList($conn);
     
     $connection->close();
     echo json_encode($todoList->getNewItem());
