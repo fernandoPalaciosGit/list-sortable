@@ -30,4 +30,4 @@ if (Connection::checkPostStatus() &&  $action != false ) {
 } else {
     die('Cannot access correctly to action list.');
 }
- ?>}
+ ?>

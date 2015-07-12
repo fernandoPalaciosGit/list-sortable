@@ -14,4 +14,4 @@ require_once(ROOT_PATH . '/back/view.body.php');
 require_once(ROOT_PATH . '/back/view.footer.php');
 
 $connection->close();
-  ?>}
+  ?>
