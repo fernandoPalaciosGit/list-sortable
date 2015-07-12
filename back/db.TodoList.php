@@ -18,7 +18,7 @@ class TodoList {
         return $this->itemList;
     }
     
-    public function setNewItem ($action = 'edit', $id, $name, $order = 1) {
+    public function setNewItem ($action, $id, $name, $order) {
         $this->itemPost['action'] = $action;
         $this->itemPost['id'] = $id;
         $this->itemPost['name'] = $name;
@@ -27,6 +27,7 @@ class TodoList {
     
     // LOGIC CONTROLLER
     public function actionTodoList () {
+        
         switch ($this->itemPost['action']) {
             case 'insert':
                 $this->insertItemFromDb();
@@ -50,6 +51,7 @@ class TodoList {
     public function getItemListFromDb ($conn) {
         $query = "SELECT * FROM elements ORDER BY 'order';";
         $result = mysqli_query($conn, $query);
+        
         while ($data = mysqli_fetch_assoc($result)) {
             $this->setItemList($data['id'], $data['name']);
         }
@@ -58,14 +60,24 @@ class TodoList {
     private function insertItemFromDb ($conn) {
         $parseQuery = "INSERT INTO elements (name, order) VALUES ('%s', %d);";
         $query = sprintf($parseQuery, $this->itemPost['name'], $this->itemPost['order']);
-        if (mysqli_query($conn, $query)){
+        
+        if (mysqli_query($conn, $query)) {
             $this->itemPost['id'] = mysqli_insert_id($conn);
             $this->itemPost['isActionDone'] = true;
         }   
     }
     
     private function removeItemFromDb ($conn) {
+        $parseQuery = "DELETE FROM elementos WHERE id = %d;";
+        $query = sprintf($parseQuery, $this->itemPost['id']);
         
+        if (mysqli_query($conn, $query)) {
+            // sort items that are ahead of the modified
+            $parseQuery = "UPDATE elements SET order = order - 1 WHERE order > %d;";
+            $query = sprintf($parseQuery, $this->itemPost['order']);
+            mysqli_query($conn, $query); 
+            $this->itemPost['isActionDone'] = true;
+        }
     }
     
     private function editItemFromDb ($conn) {
