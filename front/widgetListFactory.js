@@ -55,11 +55,32 @@
                     console.info(xhr.responseJSON || xhr.responseText);
                 }
             });
+        },
+        
+        // change DB state on update todoList order
+        onUpdateSortable = function (uiList) {
+            var sortableListId = uiList.$list.sortable('toArray', {attribute: 'data-id-list'} ).toString();
+            
+            if (uiList.isOrdered) {
+                $.ajax({
+                    type: 'POST',
+                    url: '../back/ctrl.actionList.php',
+                    dataType: 'json',
+                    data: {
+                        action: 'order',
+                        sortableListId: sortableListId 
+                    },
+                    complete: function (xhr) {
+                        console.info(xhr.responseJSON || xhr.responseText);
+                    }
+                });
+            }
         };
         
         return {
             toggleStatus: toggleStatus,
-            onInsertItem: onInsertItem
+            onInsertItem: onInsertItem,
+            onUpdateSortable: onUpdateSortable
         };
     };
 }(jQuery));
