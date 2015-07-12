@@ -69,7 +69,7 @@ class TodoList {
     }
     
     private function insertItemFromDb ($conn) {
-        $parseQuery = "INSERT INTO elements (name, order) VALUES ('%s', %d);";
+        $parseQuery = "INSERT INTO elements (`name`, `order`) VALUES ('%s', %d);";
         $query = sprintf($parseQuery, $this->itemPost['name'], $this->itemPost['order']);
         
         if (mysqli_query($conn, $query)) {
@@ -79,12 +79,12 @@ class TodoList {
     }
     
     private function removeItemFromDb ($conn) {
-        $parseQuery = "DELETE FROM elements WHERE id = %d;";
+        $parseQuery = "DELETE FROM elements WHERE `id` = %d;";
         $query = sprintf($parseQuery, $this->itemPost['id']);
         
         if (mysqli_query($conn, $query)) {
             // sort items that are ahead of the modified
-            $parseQuery = "UPDATE elements SET order = order - 1 WHERE order > %d;";
+            $parseQuery = "UPDATE elements SET `order` = order - 1 WHERE `order` > %d;";
             $query = sprintf($parseQuery, $this->itemPost['order']);
             mysqli_query($conn, $query); 
             $this->itemPost['isActionDone'] = true;
@@ -92,7 +92,7 @@ class TodoList {
     }
     
     private function editItemFromDb ($conn) {
-        $parseQuery = "UPDATE elements SET name = '%s' WHERE id = %d;";
+        $parseQuery = "UPDATE elements SET `name` = '%s' WHERE `id` = %d;";
         $query = sprintf($parseQuery, $this->itemPost['name'], $this->itemPost['id']);
      
         if (mysqli_query($conn, $query)) {
@@ -103,7 +103,7 @@ class TodoList {
     private function orderItemFromDb ($conn) {
         // manage new ordered items id´s (by toArray interface)
         $sortableListId = explode(',', $this->itemPost['sortableListId']);
-        $query = 'UPDATE elements SET `order` = CASE id ' . PHP_EOL;
+        $query = 'UPDATE elements SET `order` = CASE `id` ' . PHP_EOL;
         
         // update all itemList with new sorted value
         foreach ($sortableListId as $index => $idList){

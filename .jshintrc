@@ -34,6 +34,6 @@
 
     // define readonly variables
     "globals": {
-        "APP": false
+        "console": false
     }
 }

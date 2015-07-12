@@ -13,7 +13,8 @@
             widget = APP.TodoList.widget,
             $formList = $('.js-form-todo-list'),
             $controlChangeStatus = $formList.find('.js-control-status-list:radio'),
-            $controlInsertItem = $formList.find('.js-control-insert-item:submit');
+            $controlInsertItem = $formList.find('.js-control-insert-item:submit'),
+            $controlNameItem = $formList.find('.js-control-todo-name');
         
         // change todo list status from default checked
         widget.toggleStatus(uiList, $controlChangeStatus.filter(':checked').val());
@@ -25,11 +26,16 @@
         $formList.on('submit', function (evSubmit) {
             evSubmit.preventDefault();
         });
-        $controlChangeStatus.on('change', function (evChange) {
+        $controlChangeStatus.on('change', function () {
             widget.toggleStatus(uiList, $(this).val());
         });
-        $controlInsertItem.on('click', function (evClick) {
+        $controlInsertItem.on('click', function () {
+            var nameItem = $controlNameItem.val().trim();
             
+            if (nameItem.length > 0) {
+               widget.onInsertItem(uiList, nameItem);
+               $formList.get(0).reset();
+            }
         });
     });
 }(jQuery, window.UiList, window.widgetListFactory));

@@ -1,18 +1,25 @@
-;(function($){
+;(function($, w){
     'use strict';
     
     // TodoList contructor properties     
-    window.UiList = function (list, items) {
-        this.$list = $(list);
-        this.$itemList = this.$list.children(items);
+    w.UiList = function (list, items) {
+        this.itemsSel = list;
+        this.listSel = items;
+        this.$list = $(this.itemsSel);
+        this.updateItemList();
         this.isOrdered = false;    
         // init sortable list
         this.$list.sortable();
     };
     
+    w.UiList.prototype.updateItemList = function () {
+        this.$itemList = this.$list.children(this.listSel);
+    };
+    
     // change DB state on update todoList order
-    UiList.prototype.onUpdateSortable = function (evSort) {
+    w.UiList.prototype.onUpdateSortable = function () {
         var sortableListId = this.$list.sortable('toArray', {attribute: 'data-id-list'} ).toString();
+        
         if (this.isOrdered) {
             $.ajax({
                 type: 'POST',
@@ -22,10 +29,10 @@
                     action: 'order',
                     sortableListId: sortableListId 
                 },
-                complete: function (xhr, status) {
-                    console.info(xhr.responseJSON);
+                complete: function (xhr) {
+                    console.info(xhr.responseJSON || xhr.responseText);
                 }
             });
         }
     };
-}(jQuery));
+}(jQuery, window));
