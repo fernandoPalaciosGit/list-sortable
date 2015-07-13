@@ -16,7 +16,9 @@
             $controlChangeStatus = $formList.find('.js-control-status-list:radio'),
             $controlInsertItem = $formList.find('.js-control-insert-item:submit'),
             $controlNameItem = $formList.find('.js-control-todo-name'),
-            $controlRemoveList = uiList.$itemList.find('.js-control-remove-item');
+            $controlRemoveList = uiList.$itemList.find('.js-control-remove-item'),
+            $modalTrigger = $('.js-modal-trigger-remove-item'),
+            $modalAction = $('.js-modal-action-remove-item'); //.modal-action
         
         // change todo list status from default checked
         widget.toggleStatus(uiList, $controlChangeStatus.filter(':checked').val());
@@ -56,14 +58,32 @@
             var nameItem = $controlNameItem.val().trim();
             
             if (nameItem.length > 0) {
+                $controlNameItem.val('');
+                $controlChangeStatus
+                    .filter('#order')
+                    .prop('checked', true)
+                    .trigger('change');
                widget.onInsertItem(uiList, nameItem);
-               $formList.get(0).reset();
             }
         });
+        // initialize modal
+        $modalTrigger.leanModal({ dismissible: false });
         $controlRemoveList.on('click', function () {
-            var $item = $(this).closest('.collection-item');
-                
-            widget.onRemoveSortable($item, $item.data('idList'), $item.data('orderList')); 
+            
+            // trigger modal only for ordered estatus list
+            if (uiList.isOrdered) {
+                uiList.setRemoveItem($(this).closest('.collection-item'));
+                $modalTrigger.trigger('click');
+            }
+        });
+        $modalAction.on('click', function () {
+            var $item = uiList.getRemoveItem();
+            
+            // remove item only on agree action
+            if ($(this).data('action') && !$.isEmptyObject($item)) {
+                widget.onRemoveSortable($item, $item.data('idList'), $item.data('orderList'));
+                uiList.setRemoveItem({});
+            }
         });
     });
 }(jQuery, window.UiList, window.widgetListFactory));

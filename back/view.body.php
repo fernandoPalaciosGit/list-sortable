@@ -49,11 +49,11 @@
                 
                 <div class="row">
                     <div class="input-field col s12 center-align">
-                        <input  class="waves-effect waves-light btn js-control-insert-item"
-                                type="submit" value="Añadir">
+                        <input  class="btn js-control-insert-item"
+                                type="submit" value="Añadir"/>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </main>
