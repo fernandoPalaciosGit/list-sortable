@@ -46,13 +46,17 @@
                 },
                 success: function (data){
                     if (data.isActionDone){
-                        $('<a>',{
-                            href: '#',
-                            'class': 'js-collection-todo-item collection-item',
-                            'data-id-list': data.id,
-                            'data-order-list': data.order,
-                            text: data.name
-                        }).appendTo(uiList.$list);
+                        var frag = document.createDocumentFragment(),
+                            $item = $('<a>', {
+                                href: '#',
+                                'class': 'js-collection-todo-item collection-item',
+                                'data-id-list': data.id,
+                                'data-order-list': data.order,
+                                html: '<span class="badge js-control-remove-item"><i class="material-icons red-text">delete</i></span>' + data.name
+                            });
+                        
+                        frag.appendChild($item.get(0));
+                        uiList.$list.append(frag);
                         _updateStatusList(uiList);
                         Materialize.toast('Cambios guardados, nueva Tarea.', 3000, 'rounded');
                     }
