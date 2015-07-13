@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /programs-current/sortable-list/
+
+# allow access only indexes folders
+Options -Indexes
