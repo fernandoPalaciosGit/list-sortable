@@ -54,7 +54,7 @@
                             text: data.name
                         }).appendTo(uiList.$list);
                         _updateStatusList(uiList);
-                        Materialize.toast('Cambios guardados, nueva Tarea.', 3000, 'rounded')
+                        Materialize.toast('Cambios guardados, nueva Tarea.', 3000, 'rounded');
                     }
                 },
                 complete: function (xhr) {
@@ -77,7 +77,7 @@
                         sortableListId: sortableListId 
                     },
                     success: function () {
-                        Materialize.toast('Cambios guardados, Tareas ordenadas.', 3000, 'rounded')
+                        Materialize.toast('Cambios guardados, Tareas ordenadas.', 3000, 'rounded');
                     },
                     complete: function (xhr) {
                         console.info(xhr.responseJSON || xhr.responseText);
@@ -97,7 +97,27 @@
                     name: name
                 },
                 success: function () {
-                    Materialize.toast('Cambios guardados, Tarea editada.', 3000, 'rounded')
+                    Materialize.toast('Cambios guardados, Tarea editada.', 3000, 'rounded');
+                },
+                complete: function (xhr) {
+                    console.info(xhr.responseJSON || xhr.responseText);
+                }
+            });
+        },
+        
+        onRemoveSortable = function ($itemList, id, order) {
+            $.ajax({
+                type: _ajaxStatus.type,
+                url: _ajaxStatus.url,
+                dataType: _ajaxStatus.dataType,
+                data: {
+                    action: 'remove',
+                    orden: order,
+                    id: id
+                },
+                success: function(){
+                    $itemList.fadeOut('slow').remove();
+                    Materialize.toast('Cambios guardados, Tarea eliminada.', 3000, 'rounded');
                 },
                 complete: function (xhr) {
                     console.info(xhr.responseJSON || xhr.responseText);
@@ -109,7 +129,8 @@
             toggleStatus: toggleStatus,
             onInsertItem: onInsertItem,
             onUpdateSortable: onUpdateSortable,
-            onEditSortable: onEditSortable
+            onEditSortable: onEditSortable,
+            onRemoveSortable: onRemoveSortable
         };
     };
 }(jQuery));

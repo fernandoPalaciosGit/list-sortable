@@ -2,7 +2,7 @@
     
     <div class="row">
         <div class="col s12">
-            <h4 class="indigo-text text-lighten-1">LISTA DE TAREAS</h4>
+            <h4 class="light red-text text-lighten-2 center">Lista de tareas</h4>
         </div>
     </div>
     
@@ -14,6 +14,7 @@
                         data-id-list="<?= $itemList['id'] ?>"
                         data-order-list="<?= $itemList['order'] ?>"
                         class="js-collection-todo-item collection-item">
+                        <span class="badge js-control-remove-item"><i class="material-icons red-text">delete</i></span>
                         <?= $itemList['name'] ?>
                     </a>
                 <?php } ?>
