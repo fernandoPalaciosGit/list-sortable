@@ -9,9 +9,9 @@ $connection->connect();
 $todoList = new TodoList();
 $todoList->getItemListFromDb($connection->getConnecion());
 
-require_once(ROOT_PATH . '/back/view.head.php');
-require_once(ROOT_PATH . '/back/view.body.php');
-require_once(ROOT_PATH . '/back/view.footer.php');
+require_once(ROOT_PATH . '/templates/view.head.php');
+require_once(ROOT_PATH . '/templates/view.body.php');
+require_once(ROOT_PATH . '/templates/view.footer.php');
 
 $connection->close();
   ?>
