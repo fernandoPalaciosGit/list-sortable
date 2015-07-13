@@ -20,6 +20,7 @@
   "dependencies": {
     "materialize": "~0.97.0",
     "jquery": "~2.1.4",
-    "jquery.ui": "~1.11.4"
+    "jquery.ui": "~1.11.4",
+    "github-fork-ribbon-css": "~0.1.1"
   }
 }
