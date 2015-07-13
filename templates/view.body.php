@@ -22,7 +22,7 @@
                         data-order-list="<?= $itemList['order'] ?>"
                         class="js-collection-todo-item collection-item">
                         <span class="badge js-control-remove-item"><i class="material-icons red-text">delete</i></span>
-                        <?= $itemList['name'] ?>
+                        <span class="item-name"><?= $itemList['name'] ?></span>
                     </a>
                 <?php } ?>
             </div>

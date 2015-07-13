@@ -3,10 +3,26 @@
     
     window.widgetListFactory = function () {
         var _actualStatus = {},
+        
         _ajaxStatus = {
             type: 'POST',
             url: '../back/ctrl.actionList.php',
             dataType: 'json'   
+        },
+        
+        _renderItemTemplate = function (id, order, name) {
+            var html = '';
+            html += '<span class="badge js-control-remove-item">';
+            html += '<i class="material-icons red-text">delete</i></span>';
+            html += '<span class="item-name">' + name + '</span>';
+            
+            return $('<a>', {
+                href: '#',
+                'class': 'js-collection-todo-item collection-item',
+                'data-id-list': id,
+                'data-order-list': order,
+                html: html
+            });
         },
 
         // trigger TodoList state : Edit/order
@@ -47,13 +63,7 @@
                 success: function (data){
                     if (data.isActionDone){
                         var frag = document.createDocumentFragment(),
-                            $item = $('<a>', {
-                                href: '#',
-                                'class': 'js-collection-todo-item collection-item',
-                                'data-id-list': data.id,
-                                'data-order-list': data.order,
-                                html: '<span class="badge js-control-remove-item"><i class="material-icons red-text">delete</i></span>' + data.name
-                            });
+                            $item = _renderItemTemplate(data.id, data.order, data.name);
                         
                         frag.appendChild($item.get(0));
                         uiList.$list.append(frag);

@@ -29,7 +29,7 @@
             .on('keydown', uiList.$itemList, function (ev) {
                 var key = ev.which || ev.keyCode,
                     $target = $(ev.target),
-                    nameItem = $target.text().trim();
+                    nameItem = $target.find('.item-name').text().trim();
                 
                 // avoid break line on Enter
                 key === KEY_ENTER && ev.preventDefault();

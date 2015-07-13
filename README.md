@@ -2,7 +2,7 @@
 
 #### Installation
 - [Download Xampp (Apache + Mysql)](http://sourceforge.net/projects/xampp/)
-- [Load by phpmyadmin the Squema DB](http://www.cruzalosdedos.es/sortable-list/db/sortable-list-schema.sql)
+- [Import Schema Database, by phpmyadmin or similar Workbench](http://www.cruzalosdedos.es/sortable-list/db/sortable-list-schema.sql)
 - Create Authentication Keys to DB connection into **properties/private.php**
 ```php
 <?php 
