@@ -1,24 +1,29 @@
 /* todo list items */
 .collection .collection-item {
-  padding-left: 40px;    
+    padding-left: 40px;    
 }
 
 .collection-item .badge-remove-item {
-  right: 100%;
-  left: 0;
-  margin-top: 7px;
+    right: 100%;
+    left: 0;
+    margin-top: 7px;
 }
 
 .collection-item .item-name {
-  padding: 10px 0;
+    padding: 10px 0;
 }
 
-/* inline Edit vendor */
+/* inline Input Edit */
 .collection-item .badge-inlineEdit-item {
-  right: 0;
-  margin-top: 50px;
+    right: 0;
+    margin-top: 50px;
 }
 
 .badge-inlineEdit-item .cancel {
-  margin-left: 15px;
+    margin: 0 15px;
+}
+
+/* Modal remove Todo Items*/
+#modal-remove-item .modal-close {
+  margin-left: 5px;
 }

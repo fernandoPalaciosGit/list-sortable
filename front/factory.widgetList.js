@@ -14,9 +14,9 @@
             
             return $('<a>', {
                 href: '#',
-                'class': 'collection-item js-collection-todo-item',
                 'data-id-list': id,
                 'data-order-list': order,
+                'class': 'collection-item js-collection-todo-item',
                 html: html
             });
         },
@@ -72,8 +72,8 @@
             
             _ajaxConnection
                 .requestData({
-                        action: 'order',
-                        sortableListId: sortableListId 
+                    action: 'order',
+                    sortableListId: sortableListId 
                 })
                 .success( function () {
                     Materialize.toast('Cambios guardados, Tareas ordenadas.', 3000, 'rounded');

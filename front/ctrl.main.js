@@ -15,55 +15,68 @@
             $controlChangeStatus = $formList.find('.js-control-status-list:radio'),
             $controlInsertItem = $formList.find('.js-control-insert-item:submit'),
             $controlNameItem = $formList.find('.js-control-todo-name'),
-            $controlRemoveList = uiList.$itemList.find('.js-control-remove-item'),
             $controlInlineEdit = uiList.$itemList.find('.js-control-edit-item'),
             $modalTrigger = $('.js-modal-trigger-remove-item'),
-            $modalAction = $('.js-modal-action-remove-item'); //.modal-action
+            $modalAction = $('.js-modal-action-remove-item');
         
         // change todo list status from default checked
         widget.toggleStatus(uiList, $controlChangeStatus.filter(':checked').val());
-        
-        // events from UI
-        uiList.$list.on('sortupdate', $.proxy(widget.onUpdateSortable, widget, uiList));
-                
-        // on Edit todo list (inline edit vendor)
-        $controlInlineEdit
-            .on('click', function (evClick) {
+        uiList.$list
+            // Initialize Todo Item Sortting Event
+            .on('sortupdate', $.proxy(widget.onUpdateSortable, widget, uiList))
+            // Eit and remove Todo Items
+            .on('click', '.js-control-edit-item', function (evClick) {
+                evClick.preventDefault();
                 
                 // before save Todo Item, check the sattus UIList
                 if(uiList.isOrdered){
                     evClick.stopPropagation();
                 }
             })
-            .inlineEdit({
-                buttons: '<span class="badge badge-inlineEdit-item"><a href="#" class="save green-text"><i class="material-icons">done</i></a><a href="#" class="cancel red-text"><i class="material-icons">undo</i></a></span>',
-                buttonsTag: 'a',
-                cancelOnBlur: true,
-                debug: false,
-                save: function (event, newData, $input) {
-                    var nameItem = newData.value.trim(),
-                        idItem = $input.element.closest('.collection-item').data('idList');
-                    
-                    // Do not update nothing Todo, Nor InlineEdit or DB, never will rise save callback
-                    if (nameItem.length === 0) {
-                        return false;  
-                    
-                    } else {
-                        $controlChangeStatus
-                            .filter('#order')
-                            .prop('checked', true)
-                            .trigger('change');
-                        widget.onEditSortable(uiList, idItem, nameItem);
-                    }
+            .on('click', '.js-control-remove-item', function (evClick) {
+                evClick.preventDefault();
+                
+                // trigger modal only for ordered estatus list
+                if (uiList.isOrdered) {
+                    uiList.setRemoveItem($(this).closest('.js-collection-todo-item'));
+                    $modalTrigger.trigger('click');
                 }
             });
-        // Events from From
+        // Edit Todo Items
+        $controlInlineEdit.inlineEdit({
+            buttons: '<span class="badge badge-inlineEdit-item"><a href="#" class="save green-text"><i class="material-icons">done</i></a><a href="#" class="cancel red-text"><i class="material-icons">undo</i></a></span>',
+            buttonsTag: 'a',
+            cancelOnBlur: true,
+            debug: false,
+            save: function (event, newData, $input) {
+                var nameItem = newData.value.trim(),
+                    idItem = $input.element.closest('.js-collection-todo-item').data('idList');
+                
+                // Do not update nothing Todo, Nor InlineEdit or DB, never will rise save callback
+                if (nameItem.length === 0) {
+                    return false;  
+                
+                } else {
+                    widget.onEditSortable(uiList, idItem, nameItem);
+                }
+            },
+            change: function() {
+                // after save OR cancel return to ordered state list
+                $controlChangeStatus
+                    .filter('#order')
+                    .prop('checked', true)
+                    .trigger('change');
+            }
+        });
+        // Prevent onsubmit to insert Item
         $formList.on('submit', function (evSubmit) {
             evSubmit.preventDefault();
         });
+        // Toggle UIList status : toEdit / toOrder
         $controlChangeStatus.on('change', function () {
             widget.toggleStatus(uiList, $(this).val());
         });
+        // Permit onClick to insert Item
         $controlInsertItem.on('click', function () {
             var nameItem = $controlNameItem.val().trim();
             
@@ -74,19 +87,12 @@
                     .filter('#order')
                     .prop('checked', true)
                     .trigger('change');
-               widget.onInsertItem(uiList, nameItem);
+                widget.onInsertItem(uiList, nameItem);
             }
         });
-        // initialize modal
+        // initialize on remode Todo item modal
         $modalTrigger.leanModal({ dismissible: false });
-        $controlRemoveList.on('click', function () {
-            
-            // trigger modal only for ordered estatus list
-            if (uiList.isOrdered) {
-                uiList.setRemoveItem($(this).closest('.collection-item'));
-                $modalTrigger.trigger('click');
-            }
-        });
+        // Button modal action for remove Todo Items
         $modalAction.on('click', function () {
             var $item = uiList.getRemoveItem();
             
