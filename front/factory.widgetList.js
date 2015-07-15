@@ -1,4 +1,4 @@
-;(function($, AjaxConnection){
+;( function ($, AjaxConnection) {
     'use strict';
     
     window.widgetListFactory = function () {
@@ -8,13 +8,13 @@
         
         _renderItemTemplate = function (id, order, name) {
             var html = '';
-            html += '<span class="badge js-control-remove-item">';
+            html += '<span class="badge badge-remove-item js-control-remove-item">';
             html += '<i class="material-icons red-text">delete</i></span>';
-            html += '<span class="item-name">' + name + '</span>';
+            html += '<span class="item-name js-control-edit-item truncate">' + name + '</span>';
             
             return $('<a>', {
                 href: '#',
-                'class': 'js-collection-todo-item collection-item',
+                'class': 'collection-item js-collection-todo-item',
                 'data-id-list': id,
                 'data-order-list': order,
                 html: html
@@ -25,7 +25,6 @@
         _updateStatusList = function (uiList) {
             uiList.updateItemList();
             uiList.$list.sortable(_actualStatus.sort).sortable('refresh');
-            uiList.$itemList.attr('contenteditable', _actualStatus.isEditable);
             uiList.isOrdered = !_actualStatus.isEditable;
         },
         
@@ -53,7 +52,7 @@
                     name: name,
                     order: uiList.$itemList.size() + 1
                 })
-                .success(function (data) {
+                .success( function (data) {
                     if (data.isActionDone){
                         var frag = document.createDocumentFragment(),
                             $item = _renderItemTemplate(data.id, data.order, data.name);
@@ -76,7 +75,7 @@
                         action: 'order',
                         sortableListId: sortableListId 
                 })
-                .success(function () {
+                .success( function () {
                     Materialize.toast('Cambios guardados, Tareas ordenadas.', 3000, 'rounded');
                 })
                 .complete(_ajaxConnection.logStatus);
@@ -102,7 +101,7 @@
                     orden: order,
                     id: id
                 })
-                .success(function () {
+                .success( function () {
                     $itemList.fadeOut('slow').remove();
                     Materialize.toast('Cambios guardados, Tarea eliminada.', 3000, 'rounded');
                 })

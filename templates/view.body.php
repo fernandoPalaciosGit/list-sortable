@@ -14,21 +14,21 @@
     </div>
     
     <div class="row">
-        <div class="col m12 l6">
+        <div class="col s12 m7 l6">
             <div class="collection js-collection-todo-list">
                 <?php  foreach ($todoList->getItemList() as $itemList) { ?>
-                    <a  href="#" contenteditable=""
+                    <a  href="#"
                         data-id-list="<?= $itemList['id'] ?>"
                         data-order-list="<?= $itemList['order'] ?>"
-                        class="js-collection-todo-item collection-item">
-                        <span class="badge js-control-remove-item"><i class="material-icons red-text">delete</i></span>
-                        <span class="item-name"><?= $itemList['name'] ?></span>
+                        class="collection-item js-collection-todo-item">
+                        <span class="badge badge-remove-item js-control-remove-item"><i class="material-icons red-text">delete</i></span>
+                        <span class="item-name js-control-edit-item truncate"><?= $itemList['name'] ?></span>
                     </a>
                 <?php } ?>
             </div>
         </div>
         
-        <div class="col m12 l6">
+        <div class="col s12 m5 l6">
             <form class="js-form-todo-list" action="back/ctrl.actionList.php">
                 <div class="row">
                     <div class="col s12">

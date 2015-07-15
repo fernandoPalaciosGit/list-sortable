@@ -1,4 +1,4 @@
-;(function($, UiList, widgetListFactory){
+;( function ($, UiList, widgetListFactory) {
     'use strict';
     
     var APP = {
@@ -10,13 +10,13 @@
     
     $(document).on('ready', function () {
         var uiList = APP.TodoList.uiList,
-            widget = APP.TodoList.widget,
-            KEY_TAB = 9, KEY_ENTER = 13, 
+            widget = APP.TodoList.widget, 
             $formList = $('.js-form-todo-list'),
             $controlChangeStatus = $formList.find('.js-control-status-list:radio'),
             $controlInsertItem = $formList.find('.js-control-insert-item:submit'),
             $controlNameItem = $formList.find('.js-control-todo-name'),
             $controlRemoveList = uiList.$itemList.find('.js-control-remove-item'),
+            $controlInlineEdit = uiList.$itemList.find('.js-control-edit-item'),
             $modalTrigger = $('.js-modal-trigger-remove-item'),
             $modalAction = $('.js-modal-action-remove-item'); //.modal-action
         
@@ -24,29 +24,39 @@
         widget.toggleStatus(uiList, $controlChangeStatus.filter(':checked').val());
         
         // events from UI
-        uiList.$list
-            .on('sortupdate', $.proxy(widget.onUpdateSortable, widget, uiList))
-            .on('keydown', uiList.$itemList, function (ev) {
-                var key = ev.which || ev.keyCode,
-                    $target = $(ev.target),
-                    nameItem = $target.find('.item-name').text().trim();
+        uiList.$list.on('sortupdate', $.proxy(widget.onUpdateSortable, widget, uiList));
                 
-                // avoid break line on Enter
-                key === KEY_ENTER && ev.preventDefault();
+        // on Edit todo list (inline edit vendor)
+        $controlInlineEdit
+            .on('click', function (evClick) {
                 
-                // update todolist on Enter or Tab and not for order status
-                if (!uiList.isOrdered && nameItem.length > 0 &&
-                    (key === KEY_ENTER || key === KEY_TAB)) {
-                    var idItem = $target.data('idList');
+                // before save Todo Item, check the sattus UIList
+                if(uiList.isOrdered){
+                    evClick.stopPropagation();
+                }
+            })
+            .inlineEdit({
+                buttons: '<span class="badge badge-inlineEdit-item"><a href="#" class="save green-text"><i class="material-icons">done</i></a><a href="#" class="cancel red-text"><i class="material-icons">undo</i></a></span>',
+                buttonsTag: 'a',
+                cancelOnBlur: true,
+                debug: false,
+                save: function (event, newData, $input) {
+                    var nameItem = newData.value.trim(),
+                        idItem = $input.element.closest('.collection-item').data('idList');
                     
-                    $controlChangeStatus
-                        .filter('#order')
-                        .prop('checked', true)
-                        .trigger('change');
-                    widget.onEditSortable(uiList, idItem, nameItem);
+                    // Do not update nothing Todo, Nor InlineEdit or DB, never will rise save callback
+                    if (nameItem.length === 0) {
+                        return false;  
+                    
+                    } else {
+                        $controlChangeStatus
+                            .filter('#order')
+                            .prop('checked', true)
+                            .trigger('change');
+                        widget.onEditSortable(uiList, idItem, nameItem);
+                    }
                 }
             });
-        
         // Events from From
         $formList.on('submit', function (evSubmit) {
             evSubmit.preventDefault();
@@ -57,6 +67,7 @@
         $controlInsertItem.on('click', function () {
             var nameItem = $controlNameItem.val().trim();
             
+            // Do not insert nothing Todo
             if (nameItem.length > 0) {
                 $controlNameItem.val('');
                 $controlChangeStatus

@@ -6,16 +6,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="<?= ROOT_PATH . '/bower_components/materialize/dist/css/materialize.min.css' ?>"/>
     <link rel="stylesheet" href="<?= ROOT_PATH . '/bower_components/github-fork-ribbon-css/gh-fork-ribbon.css' ?>"/>
-    <style>
-        .collection .collection-item {
-            padding-left: 40px;    
-        }
-        
-        .collection-item .badge {
-              right: 100%;
-              left: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="<?= ROOT_PATH . '/css/main.css' ?>"/>
     <script src="<?= ROOT_PATH . '/bower_components/jquery/dist/jquery.min.js' ?>"></script>
 </head>  
 <body>
