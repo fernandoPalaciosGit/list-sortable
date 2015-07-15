@@ -23,8 +23,9 @@
     <script src="<?= ROOT_PATH . '/bower_components/jquery.ui/ui/sortable.js' ?>"></script>
     
     <!-- Application -->
-    <script src="<?= ROOT_PATH . '/front/UiList.js' ?>"></script>
-    <script src="<?= ROOT_PATH . '/front/widgetListFactory.js' ?>"></script>
-    <script src="<?= ROOT_PATH . '/front/main.js' ?>"></script>
+    <script src="<?= ROOT_PATH . '/front/prototype.AjaxConnection.js' ?>"></script>
+    <script src="<?= ROOT_PATH . '/front/prototype.UiList.js' ?>"></script>
+    <script src="<?= ROOT_PATH . '/front/factory.widgetList.js' ?>"></script>
+    <script src="<?= ROOT_PATH . '/front/ctrl.main.js' ?>"></script>
 </body>  
 </html>
