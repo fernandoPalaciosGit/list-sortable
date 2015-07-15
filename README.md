@@ -11,9 +11,14 @@
     define("CONN_PASS", "apss-db-connection");
  ?>
 ```
+- install bower dependencies
+```bash
+$bower install
+```
 
 #### Specifications
 - [Full tutorial](http://www.funcion13.com/lista-de-elementos-ordenables-y-editables-usando-html5-jquery-php-y-mysql/)
 - [Jquery UI sortable interface](http://api.jqueryui.com/sortable/)
+- [Jquery plugin for Inline Editor](http://www.yelotofu.com/2009/08/jquery-inline-edit-tutorial/)
 
 #### [Demo](http://www.cruzalosdedos.es/sortable-list/public/index.php)
