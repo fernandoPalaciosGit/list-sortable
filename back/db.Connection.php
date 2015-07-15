@@ -7,9 +7,11 @@ class Connection {
     private $myconn;
 
     public function connect() {
-        $this->myconn = mysqli_connect($this->host, $this->user, $this->pass, $this->db);
-        if (!$this->myconn) {
-            die('Could not connect to database!');
+        $this->myconn = @new mysqli($this->host, $this->user, $this->pass, $this->db);
+        
+        if ($this->myconn->connect_errno) {
+            printf("Fallo de conexion: %s", $this->myconn->connect_error);
+            die();
         }
     }
 
