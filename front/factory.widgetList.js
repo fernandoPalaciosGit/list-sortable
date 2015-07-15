@@ -1,14 +1,10 @@
-;(function($){
+;(function($, AjaxConnection){
     'use strict';
     
     window.widgetListFactory = function () {
         var _actualStatus = {},
         
-        _ajaxStatus = {
-            type: 'POST',
-            url: '../back/ctrl.actionList.php',
-            dataType: 'json'   
-        },
+        _ajaxConnection = new AjaxConnection('POST', '../back/ctrl.actionList.php', 'json'),
         
         _renderItemTemplate = function (id, order, name) {
             var html = '';
@@ -51,16 +47,13 @@
         
         // On submit new Todo Item
         onInsertItem = function (uiList, name) {
-            $.ajax({
-                type: _ajaxStatus.type,
-                url: _ajaxStatus.url,
-                dataType: _ajaxStatus.dataType,
-                data: {
+            _ajaxConnection
+                .requestData({
                     action: 'insert',
                     name: name,
                     order: uiList.$itemList.size() + 1
-                },
-                success: function (data){
+                })
+                .success(function (data) {
                     if (data.isActionDone){
                         var frag = document.createDocumentFragment(),
                             $item = _renderItemTemplate(data.id, data.order, data.name);
@@ -70,73 +63,50 @@
                         _updateStatusList(uiList);
                         Materialize.toast('Cambios guardados, nueva Tarea.', 3000, 'rounded');
                     }
-                },
-                complete: function (xhr) {
-                    console.info(xhr.responseJSON || xhr.responseText);
-                }
-            });
+                })
+                .complete(_ajaxConnection.logStatus);
         },
         
         // change DB state on update todoList order
         onUpdateSortable = function (uiList) {
             var sortableListId = uiList.$list.sortable('toArray', {attribute: 'data-id-list'} ).toString();
             
-            if (uiList.isOrdered) {
-                $.ajax({
-                    type: _ajaxStatus.type,
-                    url: _ajaxStatus.url,
-                    dataType: _ajaxStatus.dataType,
-                    data: {
+            _ajaxConnection
+                .requestData({
                         action: 'order',
                         sortableListId: sortableListId 
-                    },
-                    success: function () {
-                        Materialize.toast('Cambios guardados, Tareas ordenadas.', 3000, 'rounded');
-                    },
-                    complete: function (xhr) {
-                        console.info(xhr.responseJSON || xhr.responseText);
-                    }
-                });
-            }
+                })
+                .success(function () {
+                    Materialize.toast('Cambios guardados, Tareas ordenadas.', 3000, 'rounded');
+                })
+                .complete(_ajaxConnection.logStatus);
         },
-        
+                
         onEditSortable = function (uiList, id, name) {
-            $.ajax({
-                type: _ajaxStatus.type,
-                url: _ajaxStatus.url,
-                dataType: _ajaxStatus.dataType,
-                data: {
+            _ajaxConnection
+                .requestData({
                     action: 'edit',
                     id: id,
                     name: name
-                },
-                success: function () {
+                })
+                .success(function () {
                     Materialize.toast('Cambios guardados, Tarea editada.', 3000, 'rounded');
-                },
-                complete: function (xhr) {
-                    console.info(xhr.responseJSON || xhr.responseText);
-                }
-            });
+                })
+                .complete(_ajaxConnection.logStatus);
         },
         
         onRemoveSortable = function ($itemList, id, order) {
-            $.ajax({
-                type: _ajaxStatus.type,
-                url: _ajaxStatus.url,
-                dataType: _ajaxStatus.dataType,
-                data: {
+            _ajaxConnection
+                .requestData({
                     action: 'remove',
                     orden: order,
                     id: id
-                },
-                success: function(){
+                })
+                .success(function () {
                     $itemList.fadeOut('slow').remove();
                     Materialize.toast('Cambios guardados, Tarea eliminada.', 3000, 'rounded');
-                },
-                complete: function (xhr) {
-                    console.info(xhr.responseJSON || xhr.responseText);
-                }
-            });
+                })
+                .complete(_ajaxConnection.logStatus);
         };
         
         return {
@@ -147,4 +117,4 @@
             onRemoveSortable: onRemoveSortable
         };
     };
-}(jQuery));
+}(jQuery, window.AjaxConnection));
