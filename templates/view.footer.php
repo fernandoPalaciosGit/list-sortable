@@ -23,6 +23,7 @@
     <script src="<?= ROOT_PATH . '/bower_components/jquery.ui/ui/sortable.js' ?>"></script>
     
     <!-- Application -->
+    <script async src="<?= ROOT_PATH . '/front/vendor.jquery.inlineedit.js' ?>"></script>
     <script src="<?= ROOT_PATH . '/front/prototype.AjaxConnection.js' ?>"></script>
     <script src="<?= ROOT_PATH . '/front/prototype.UiList.js' ?>"></script>
     <script src="<?= ROOT_PATH . '/front/factory.widgetList.js' ?>"></script>
