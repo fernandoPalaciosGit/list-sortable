@@ -7,8 +7,10 @@
 ```php
 <?php 
     // DATABASE CONNECTION
-    define("CONN_USER", "user-connection");
-    define("CONN_PASS", "apss-db-connection");
+    define("CONN_HOST", "host-name-connection");
+    define("CONN_DB", "database-name-connection");
+    define("CONN_USER", "user-name-connection");
+    define("CONN_PASS", "user-pass-connection");
  ?>
 ```
 - install bower dependencies
